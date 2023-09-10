@@ -7,21 +7,22 @@ long int s21_abs(int x) {
         x *= -1;
     return x;
 }
+
 long double s21_fabs(double x) {
     if (x < 0)
         x *= -1;
     return x;
 }
-// PI > x > PI
-double reader(double x) {
+
+double normalize_radian(double x) {
     while (x > s21_PI || x < -s21_PI) {
-    x += x > s21_PI ? -2 * s21_PI : 2 * s21_PI;
+        x += x > s21_PI ? -2 * s21_PI : 2 * s21_PI;
     }
     return x;
 }
 // sin
 long double s21_sin(double x) {
-x = reader(x);
+x = normalize_radian(x);
     long double rez = x, y = x;
     long double i = 1.;
     while (s21_fabs(rez) > s21_EPS) {
@@ -33,12 +34,12 @@ x = reader(x);
 }
 // cos
 long double s21_cos(double x) {
-    x = reader(x);
+    x = normalize_radian(x);
     return s21_sin((s21_PI / 2.0) - x);
 }
 // tan
 long double s21_tan(double x) {
-    x = reader(x);
+    x = normalize_radian(x);
     return s21_sin(x) / s21_cos(x);
 }
 // arcsin
@@ -173,9 +174,6 @@ long double s21_log(double n) {
         c *= 2 / d;
     }   
     return (double) a + c;
-
-    //long double y;
-    //return y = (x > 0 && x < 2) ? log_0_2(x) : log_other(x);
 }
 
 // base raised to the power of exp

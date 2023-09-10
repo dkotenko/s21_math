@@ -34,5 +34,5 @@ long double s21_sqrt(double x);
 long double s21_tan(double x);
 long double s21_log(double x);
 
-double reader(double x);
+double normalize_radian(double x);
 long double checker(double x);

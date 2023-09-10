@@ -192,7 +192,6 @@ Suite *lib_suite(void) {
     TCase *tc_sqrt;
     TCase *tc_pow;
     TCase *tc_fabs;
-    TCase *tc_t_double;
 
     tc_fabs = tcase_create("Fabs");
     suite_add_tcase(s, tc_fabs);
