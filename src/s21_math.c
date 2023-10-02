@@ -42,6 +42,63 @@ long double s21_tan(double x) {
     x = normalize_radian(x);
     return s21_sin(x) / s21_cos(x);
 }
+
+
+
+
+
+//TEST TRIG FUNCS
+long double s21_atan_test(double x){
+    double y = 0.0;
+    if (s21_fabs(x) < 1) {
+        for (int i = 0; i < 500; i++){
+            y = (s21_pow(-1, i) * s21_pow(x, 1+2*i))/(1+2*i);
+        }
+    }
+    else if (s21_fabs(x) > 1){
+        for (int i = 0; i < 500; i++){
+            y = (s21_pow(-1, i) * s21_pow(x, 1+2*i))/(1+2*i);
+        }
+        y += (s21_PI*s21_fabs(x))/(2*x) - y; 
+    }
+    return y;
+}
+
+long double s21_asin_test(double x){
+    double y = 0.0;
+    if (s21_fabs(x) < 1){
+        y = s21_atan_test(x/s21_sqrt_test(1-x*x));
+    } else {
+        y = s21_NAN;
+    }
+    return y;
+}
+long double s21_acos_test(double x){
+    double y = 0.0;
+    if (x > 0 && x < 1){
+        y = s21_atan_test(s21_sqrt_test(1-x*x)/x);
+    } else if ( x < 0 && x > -1){
+        y = s21_PI + s21_atan_test(s21_sqrt_test(1-x*x)/x);
+    } else
+        y = s21_NAN;
+    
+    return y;
+}
+
+long double s21_sin_test(double x){
+    double y = 0.0;
+    x = normalize_radian(x);
+
+    for (int i = 0; i < 500; i++){
+        y += s21_pow(-1, i) * s21_pow(x,2*i+1) / s21_factrial(2 * i + 1);
+    }
+}
+//END TEST TRIG FUNCS
+
+
+
+
+
 // arcsin
 long double s21_asin(double x) {
     long double rez = x, y = x;
@@ -75,10 +132,10 @@ long double s21_acos(double x) {
 long double s21_atan(double x) {
     long double y = 0;
     y = (x < 1 && x > -1) ? checker(x) : y;
-    y = x == 1 ? s21_PI / 4 : x == -1 ? s21_NPI / 4
+    y = x == 1 ? s21_PI / 4 : x == -1 ? s21_N_PI / 4
                           : x == 0    ? 0
                                       : y;
-    y = x > 1 ? s21_PI / 2 - checker(1 / x) : x < -1 ? s21_NPI / 2 - checker(1 / x)
+    y = x > 1 ? s21_PI / 2 - checker(1 / x) : x < -1 ? s21_N_PI / 2 - checker(1 / x)
                                                      : y;
     return y;
 }
@@ -164,7 +221,7 @@ long double s21_log(double n) {
     if (n < 0)
         c = s21_NAN;
     else if (n == 0) {
-        c = s21_NINF;
+        c = s21_N_INF;
     }
     else {
         for (; (d = n / s21_E) > 1; ++a, n = d);
@@ -177,26 +234,33 @@ long double s21_log(double n) {
 }
 
 // base raised to the power of exp
+// binary pow algorithm
 long double s21_pow(double base, double exp) {
-    long double out;
-    long double sign = 1;
-
-    printf("values: base - %lf, exp - %lf\n", base, exp);
-
-    if (base < 0 && exp - s21_floor(exp) < EPSILON) {
-        printf("integer exp passed\n");
-        base *= -1;
-
-        if ((long long)exp % 2 != 0) {
-            printf("negative sign passed\n");
-            sign = -1;
+    double y = 1.0;
+    unsigned long long exp_buf = exp;
+    while (exp_buf != 0) {
+        if (exp_buf & 1){ // Проверка на нечётность
+            y *= base;
         }
+        base *= base;
+        exp_buf >>= 1; // Целочисленное деление на 2
     }
-    out = s21_exp(exp * s21_log(base));
-    return out * sign;
+    return y;
 }
 
 // square root of x
+long double s21_sqrt_test(double x) {
+    double y_last = 0, y = 1.0;
+
+    while (s21_fabs(y_last - y) >= EPSILON) // Считаем до нужной точности.
+    {
+        y_last = y;
+        y = (y + x / y) / 2;
+    }
+
+    return y;
+}
+
 long double s21_sqrt(double x) {
     long double rez = 4, y = 0;
     while (s21_fabs(rez - y) > s21_EPS) {
@@ -208,4 +272,14 @@ long double s21_sqrt(double x) {
         rez = (y + x / y) / 2;
     }
     return rez;
+}
+
+int s21_factrial(int x){
+    int y;
+
+    if (x < 0) y = 0;
+    else if (x == 0) y = 1;
+    else y *= s21_factrial(x - 1);
+
+    return y;
 }
