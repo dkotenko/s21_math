@@ -183,7 +183,7 @@ long double s21_pow(double base, double exp) {
 
     printf("values: base - %lf, exp - %lf\n", base, exp);
 
-    if (base < 0 && EQUAL(exp, s21_floor(exp))) {
+    if (base < 0 && exp - s21_floor(exp) < EPSILON) {
         printf("integer exp passed\n");
         base *= -1;
 
