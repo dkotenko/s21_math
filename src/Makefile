@@ -1,41 +1,78 @@
-CC = gcc
-CFLAGS = -Wall -Wextra #-Werror
-TEST_LIBS = -lcheck -lm -lpthread
-OBJECTS=s21_math.o
-SOURSES=s21_math.c
-GCOVFLAGS = -fprofile-arcs -ftest-coverage
-OS = $(shell uname)
+LIB=s21_math
+NAME=lib$(LIB).a
+HEADERS_DIR = .
+HEADERS_FILES=$(LIB).h
 
+HEADERS = $(addprefix $(HEADERS_DIR)/, $(HEADERS_FILES))
+SRCS	= \
+			s21_math.c
+
+OBJ=$(SRCS:.c=.o)
+INCLUDES=-I./
+
+TEST_INCLUDES_DIR=.
+TEST_INCLUDES=$(TEST_INCLUDES_DIR)/tests.h
+
+TEST_DIR=.
+TEST_NAME=test.bin
+TEST_SRCS_FILES= \
+			test_s21math.c
+TEST_SRCS = $(addprefix $(TEST_DIR)/, $(TEST_SRCS_FILES))
+TEST_OBJS=$(TEST_SRCS:%.c=%.o)
+
+REPORT_NAME=report.html
+
+TEST_LIBS = ""
+OS = $(shell uname)
 ifeq ($(OS), Darwin)
 	TEST_LIBS=-lcheck
 else
 	TEST_LIBS=-lcheck -lsubunit -pthread -lrt -lm
 endif
 
-all: clean s21_math.a test gcov_report
+CC=gcc -Wall -Wextra -std=c11 -Werror 
+CC_GCOV=gcc -Wall -Wextra -Werror -std=c11 \
+			-fcf-protection=full -static-libgcc --coverage -lgcov -lm
+THREADS = 8
 
-s21_math.a: s21_math.o
-	$(CC) -c $(SOURSES)
-	@ar rcs s21_math.a $(OBJECTS)
+all: CC=$(CC_GCOV)
+all:
+	$(MAKE) -j$(THREADS) $(NAME)
 
-clean:
-	@rm -rf ./*.o ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./test_s21math ./CPPLINT*
-
-fclean:
-	@make -s clean
-	@rm -rf ./*.a test
-
-test: test_s21math.c s21_math.a
-	$(CC) $(CFLAGS) -c test_s21math.c -o test.o
-	$(CC) test.o s21_math.a $(TEST_LIBS) -o test
-
-gcov_report: s21_math.a 
-	$(CC) $(CFLAGS) --coverage test_s21math.c s21_math.c s21_math.a $(TEST_LIBS) -o gcov_test
+gcov_report: CC=$(CC_GCOV)
+gcov_report: fclean test
+	./$(TEST_NAME)
+	gcovr -r . -f src --html -o $(REPORT_NAME)
 	chmod +x *
 	./gcov_test
 	lcov -t "gcov_test" -o gcov_test.info --no-external -c -d .
 	genhtml -o report/ gcov_test.info
 	open ./report/index.html
+
+test: $(TEST_NAME)
+	@exec ./$(TEST_NAME)
+
+style_check:
+	clang-format -style=google -i *.c
+	clang-format -style=google -i ./$(TEST_DIR)/*.c
+	clang-format -style=google -i *.h
+	clang-format -style=google -i ./$(TEST_DIR)/*.h
+
+$(TEST_NAME): $(NAME) $(TEST_OBJS)
+	$(CC) $(FLAGS) $(TEST_OBJS) $(OBJ) -o $@ $(TEST_LIBS)
+
+$(TEST_DIR)/%.o:$(TEST_DIR)/%.c $(TEST_INCLUDES)
+	$(CC) $(FLAGS) -I./$(TEST_DIR)/includes -I./includes -c $< -o $@
+
+$(NAME): $(OBJ)
+	@ar rcs $(NAME) $(OBJ) 
+	@echo =================================
+	@echo $(NAME) HAS BEEN MADE          
+	@echo =================================	
+
+%.o:%.c $(HEADERS)
+	@$(CC) $(INCLUDES) -c $< -o $@
+	@echo $<
 
 check: test
 	cppcheck --enable=all --suppress=missingIncludeSystem --inconclusive --check-config *.c *.h
@@ -48,6 +85,13 @@ ifeq ($(OS), Darwin)
 else
 	CK_FORK=no valgrind --vgdb=no --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=RESULT_VALGRIND.txt ./test
 endif
+		
+clean:
+	@rm -rf ./*.o ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./test_s21math ./CPPLINT*
 
-re: clean all
-	open ./report/index.html
+fclean:
+	@make -s clean
+	@rm -rf ./*.a test
+re: fclean all
+
+.PHONY: lib clean fclean all re multi
