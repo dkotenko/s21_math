@@ -10,6 +10,7 @@
 //#define ASSERT(f21, f, value) ck_assert_ldouble_eq_tol(f21(value), (long double)(f(value)), EPSILON)
 
 #define ASSERT_MSG_FMT  "%s %.7lf: s21: %.7Lf f: %.7Lf, equal = %d\n"
+#define EQUAL(out21, out) out21 - out < EPSILON
 
 static inline void PRINT(long double (*f21)(double), double (*f)(double), double value) {
     long double out21 = f21(value);

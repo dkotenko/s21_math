@@ -16,10 +16,14 @@ all: clean s21_math.a test gcov_report
 
 s21_math.a: s21_math.o
 	$(CC) -c $(SOURSES)
-	ar rcs s21_math.a $(OBJECTS)
+	@ar rcs s21_math.a $(OBJECTS)
 
 clean:
-	rm -rf ./*.o ./*.a ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./test_s21math ./CPPLINT* test
+	@rm -rf ./*.o ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./test_s21math ./CPPLINT*
+
+fclean:
+	@make -s clean
+	@rm -rf ./*.a test
 
 test: test_s21math.c s21_math.a
 	$(CC) $(CFLAGS) -c test_s21math.c -o test.o
