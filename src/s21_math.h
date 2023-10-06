@@ -13,7 +13,7 @@
 #define s21_NAN 0.0 / 0.0
 #define s21_N_NAN -0.0 / 0.0
 #define s21_MAX_double 1.7976931348623157e308
-#define EPSILON 1e-10
+#define EPSILON 1e-7
 #define s21_E 2.7182818284590452354
 
 long int s21_abs(int x);

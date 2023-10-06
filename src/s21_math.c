@@ -208,7 +208,13 @@ long double s21_pow_fraction(double base, double exp) {
 // Mixed algorithm
 long double s21_pow(double base, double exp) {
   double y = 1;
-
+  int even = 0;
+  int neg = 0;
+  if (base < 0.0) {
+    neg = 1;
+    base *= -1;
+    if ((int)exp % 2 == 0) even = 1;
+  }
   if (base != 1.0 || exp != 0.0) {
     double exp_abs = s21_fabs(exp);
 
@@ -220,7 +226,7 @@ long double s21_pow(double base, double exp) {
 
     if (exp < 0.0) y = 1.0 / y;
   }
-
+  if (neg && !even) y *= -1;
   return y;
 }
 
@@ -242,14 +248,12 @@ long double s21_sqrt(double x) {
 }
 
 int s21_factrial(int x) {
-  int y;
+  int y = 0;
 
-  if (x < 0)
-    y = 0;
+  if (x > 0)
+    y *= s21_factrial(x - 1);
   else if (x == 0)
     y = 1;
-  else
-    y *= s21_factrial(x - 1);
 
   return y;
 }
