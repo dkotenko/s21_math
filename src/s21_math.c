@@ -101,7 +101,6 @@ long double s21_atan(double x) {
     y = s21_approximate(x);
   }
   return y;
-  
 }
 
 long double s21_ceil(double num) {
@@ -161,7 +160,7 @@ long double s21_fmod(double x, double divisor) {
 }
 
 long double s21_log(double n) {
-int a = 0, b;
+  int a = 0, b;
   double c = 0, d, e, f = 0;
   if (n < 0)
     c = s21_NAN;
@@ -186,9 +185,6 @@ int a = 0, b;
   }
   return (double)a + c;
 }
-
-
-
 
 long double s21_pow_binary(double base, double exp) {
   double y = 1.0;
@@ -222,34 +218,40 @@ long double s21_pow(double base, double exp) {
   double y = 1;
   int even = 0;
   int neg = 0;
-  if (base == 1 || exp == 0) y = 1;
+  if (base == 1 || exp == 0)
+    y = 1;
   else if (exp == s21_INF || exp == s21_N_INF) {
-    if (base < 0) y = 1;
-    else y = s21_INF;
-  } else if (exp == s21_NAN || exp == s21_N_NAN) y = s21_N_NAN;
-  else if (base == 0) y = 0;
-  else if (base < 0 && s21_fabs(exp) - (long int)s21_fabs(exp) > EPSILON) y = s21_N_NAN;
+    if (base < 0)
+      y = 1;
+    else
+      y = s21_INF;
+  } else if (exp == s21_NAN || exp == s21_N_NAN)
+    y = s21_N_NAN;
+  else if (base == 0)
+    y = 0;
+  else if (base < 0 && s21_fabs(exp) - (long int)s21_fabs(exp) > EPSILON)
+    y = s21_N_NAN;
   else {
     if (base < 0.0) {
-        neg = 1;
-        base *= -1;
-        if ((int)exp % 2 == 0) even = 1;
+      neg = 1;
+      base *= -1;
+      if ((int)exp % 2 == 0) even = 1;
     }
     if ((base != 0.0) && (base != 1.0 || exp != 0.0)) {
-        double exp_abs = s21_fabs(exp);
+      double exp_abs = s21_fabs(exp);
 
-        unsigned long int exp_integer_part = (long int)exp_abs;
-        double exp_fraction_part = exp_abs - exp_integer_part;
+      unsigned long int exp_integer_part = (long int)exp_abs;
+      double exp_fraction_part = exp_abs - exp_integer_part;
 
-        y = s21_pow_fraction(base, exp_fraction_part) *
-            s21_pow_binary(base, exp_integer_part);
+      y = s21_pow_fraction(base, exp_fraction_part) *
+          s21_pow_binary(base, exp_integer_part);
 
-        if (exp < 0.0) {
+      if (exp < 0.0) {
         y = 1.0 / y;
-        }
+      }
     }
     if (neg && !even) {
-        y *= -1;
+      y *= -1;
     }
   }
   return y;

@@ -148,7 +148,6 @@ START_TEST(s21_abs_f) {
 }
 END_TEST
 
-
 Suite *main_suite(void) {
   Suite *s;
   s = suite_create("Func Check");
@@ -228,15 +227,14 @@ Suite *main_suite(void) {
 }
 
 int main(void) {
-    int no_failed = 0;                   
-    SRunner *runner;
-    
-    runner = srunner_create(main_suite());          
-    srunner_add_suite(runner, pow_suite());
-    
+  int no_failed = 0;
+  SRunner *runner;
 
-    srunner_run_all(runner, CK_NORMAL);  
-    no_failed = srunner_ntests_failed(runner);
-    srunner_free(runner);                      
-    return (no_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;  
+  runner = srunner_create(main_suite());
+  srunner_add_suite(runner, pow_suite());
+
+  srunner_run_all(runner, CK_NORMAL);
+  no_failed = srunner_ntests_failed(runner);
+  srunner_free(runner);
+  return (no_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
