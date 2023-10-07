@@ -223,8 +223,12 @@ long double s21_pow(double base, double exp) {
   int even = 0;
   int neg = 0;
   if (base == 1 || exp == 0) y = 1;
-  else if (exp == s21_INF || exp == s21_N_INF) y = s21_INF;
-  else if (exp == s21_NAN || exp == s21_N_NAN) y = s21_N_NAN;
+  else if (exp == s21_INF || exp == s21_N_INF) {
+    if (base < 0) y = 1;
+    else y = s21_INF;
+  } else if (exp == s21_NAN || exp == s21_N_NAN) y = s21_N_NAN;
+  else if (base == 0) y = 0;
+  else if (base < 0 && s21_fabs(exp) - (long int)s21_fabs(exp) > EPSILON) y = s21_N_NAN;
   else {
     if (base < 0.0) {
         neg = 1;
@@ -244,9 +248,7 @@ long double s21_pow(double base, double exp) {
         y = 1.0 / y;
         }
     }
-    if (base == 0) {
-        y = 0;
-    } else if (neg && !even) {
+    if (neg && !even) {
         y *= -1;
     }
   }
