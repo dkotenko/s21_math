@@ -20,20 +20,19 @@ START_TEST(s21_pow_f) {
 
   ASSERT_POW(s21_pow(0, 2), pow(0, 2));
 
-  ck_assert_double_infinite(s21_pow(
-      0, s21_N_INF));  // pow(0, s21_N_INF) = inf, по этому, проверяем так.
+  ck_assert_int_eq(isinf(s21_pow(0, s21_N_INF)), isinf(pow(0, s21_N_INF)));
   ASSERT_POW(s21_pow(-1, s21_N_INF), pow(-1, s21_N_INF));
   ASSERT_POW(s21_pow(-1, s21_INF), pow(-1, s21_INF));
 }
 END_TEST
 
 START_TEST(s21_pow_zero_base_nan_exp) {
-  ASSERT_POW(s21_pow(0, s21_NAN), pow(0, s21_NAN));
+  ck_assert_int_eq(isnan(s21_pow(0, s21_NAN)), isnan(pow(0, s21_NAN)));
 }
 END_TEST
 
 START_TEST(s21_pow_zero_base_nnan_exp) {
-  ASSERT_POW(s21_pow(0, s21_N_NAN), pow(0, s21_N_NAN));
+  ck_assert_int_eq(isnan(s21_pow(0, s21_N_NAN)), isnan(pow(0, s21_N_NAN)));
 }
 END_TEST
 
