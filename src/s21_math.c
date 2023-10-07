@@ -245,7 +245,8 @@ long double s21_pow(double base, double exp) {
     y = 0;
   } else if (neg && !even) {
     y *= -1;
-  } 
+  }
+  if (base == 1 || exp == 0) y = 1;
   return y;
 }
 
