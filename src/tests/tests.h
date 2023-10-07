@@ -8,3 +8,6 @@
 #include <stdlib.h>
 
 #include "s21_math.h"
+
+Suite *main_suite(void);
+Suite *pow_suite(void);

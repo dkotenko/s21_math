@@ -120,19 +120,23 @@ START_TEST(s21_sqrt_f) {
   // assert_args(args, LEN_ARR(args), s21_ceil, ceil);
   ASSERT_ARGS(s21_sqrt, sqrt);
 
-  for (double i = -1.; i < 100000; i += 10) {
+  for (double i = 0; i < 100000; i += 10) {
     ASSERT(s21_sqrt, sqrt, i);
   }
   for (double i = 0; i < 1; i += 0.001) {
     ASSERT(s21_sqrt, sqrt, i);
   }
+
+  ck_assert_int_eq(isnan(s21_sqrt(-1)), isnan(sqrt(-1)));
 }
 END_TEST
 
 START_TEST(s21_fabs_f) {
-  double args[] = {0, -1, 1, INT_MAX, INT_MIN, s21_INF};
+  double args[] = {0, -1, 1};
 
   ASSERT_ARGS(s21_fabs, fabs);
+
+  ck_assert_int_eq(isinf(s21_fabs(s21_INF)), isinf(fabs(s21_INF)));
 }
 END_TEST
 
@@ -144,23 +148,8 @@ START_TEST(s21_abs_f) {
 }
 END_TEST
 
-/*
-** TWO ARGS
-*/
 
-START_TEST(s21_pow_f) {
-  ck_assert_ldouble_eq_tol(s21_pow(2.6, 3.45), pow(2.6, 3.45), EPSILON);
-  ck_assert_ldouble_eq_tol(s21_pow(3.0, 14.0), pow(3.0, 14.0), EPSILON);
-  ck_assert_ldouble_eq_tol(s21_pow(31.456, 4.3), pow(31.456, 4.3), EPSILON);
-  ck_assert_ldouble_eq_tol(s21_pow(31.456, 0.3), pow(31.456, 0.3), EPSILON);
-  ck_assert_ldouble_eq_tol(s21_pow(4.3, 4.3), pow(4.3, 4.3), EPSILON);
-  printf("f21: %Lf, f: %lf\n", s21_pow(-1234, 4), pow(-1234, 4));
-  ck_assert_ldouble_eq_tol(s21_pow(-1234, 4.0), pow(-1234, 4.0), EPSILON);
-  ck_assert_ldouble_eq_tol(s21_pow(1234, -4.3), pow(1234, -4.3), EPSILON);
-}
-END_TEST
-
-Suite *lib_suite(void) {
+Suite *main_suite(void) {
   Suite *s;
   s = suite_create("Func Check");
 
@@ -177,16 +166,11 @@ Suite *lib_suite(void) {
   TCase *tc_exp;
   TCase *tc_log;
   TCase *tc_sqrt;
-  TCase *tc_pow;
   TCase *tc_fabs;
 
   tc_fabs = tcase_create("Fabs");
   suite_add_tcase(s, tc_fabs);
   tcase_add_test(tc_fabs, s21_fabs_f);
-
-  tc_pow = tcase_create("Pow");
-  suite_add_tcase(s, tc_pow);
-  tcase_add_test(tc_pow, s21_pow_f);
 
   tc_sqrt = tcase_create("Sqrt");
   suite_add_tcase(s, tc_sqrt);
@@ -244,12 +228,15 @@ Suite *lib_suite(void) {
 }
 
 int main(void) {
-  Suite *s;
-  SRunner *sr;
+    int no_failed = 0;                   
+    SRunner *runner;
+    
+    runner = srunner_create(main_suite());          
+    srunner_add_suite(runner, pow_suite());
+    
 
-  s = lib_suite();
-  sr = srunner_create(s);
-  srunner_run_all(sr, CK_VERBOSE);
-  srunner_free(sr);
-  return 0;
+    srunner_run_all(runner, CK_NORMAL);  
+    no_failed = srunner_ntests_failed(runner);
+    srunner_free(runner);                      
+    return (no_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;  
 }

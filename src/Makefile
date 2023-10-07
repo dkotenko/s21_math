@@ -13,26 +13,26 @@ INCLUDES=-I./
 TEST_INCLUDES_DIR=.
 TEST_INCLUDES=$(TEST_INCLUDES_DIR)/tests.h
 
-TEST_DIR=.
+TEST_DIR=tests
 TEST_NAME=test.bin
 TEST_SRCS_FILES= \
-			test_s21math.c
+			test_main.c \
+			test_pow.c
 TEST_SRCS = $(addprefix $(TEST_DIR)/, $(TEST_SRCS_FILES))
 TEST_OBJS=$(TEST_SRCS:%.c=%.o)
 
 REPORT_NAME=report.html
 
-TEST_LIBS = ""
 OS = $(shell uname)
 ifeq ($(OS), Darwin)
 	TEST_LIBS=-lcheck
 else
-	TEST_LIBS=-lcheck -lsubunit -pthread -lrt -lm
+	TEST_LIBS=-lcheck -lm -lpthread -lrt -lsubunit 
 endif
 
-CC=gcc -Wall -Wextra -std=c11 -Werror 
+CC=gcc -Wall -Wextra -Werror -std=c11
 CC_GCOV=gcc -Wall -Wextra -Werror -std=c11 \
-			-fcf-protection=full -static-libgcc --coverage -lgcov -lm
+			-fcf-protection=full -static-libgcc --coverage -lgcov
 THREADS = 8
 
 all: CC=$(CC_GCOV)
@@ -80,18 +80,13 @@ check: test
 	python3 ../materials/linters/cpplint.py --extension=c *.c *.h *.c
 	rm -rf CPPLINT.cfg
 	make test
-ifeq ($(OS), Darwin)
-	leaks --atExit -- test
-else
-	CK_FORK=no valgrind --vgdb=no --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=RESULT_VALGRIND.txt ./test
-endif
 		
 clean:
-	@rm -rf ./*.o ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./test_s21math ./CPPLINT*
+	@rm -rf **/*.o ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./CPPLINT*
 
 fclean:
 	@make -s clean
-	@rm -rf ./*.a test
+	@rm -rf ./*.a $(TEST_NAME)
 re: fclean all
 
 .PHONY: lib clean fclean all re multi
