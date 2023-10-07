@@ -21,7 +21,7 @@ START_TEST(s21_pow_f) {
   
   ASSERT_POW(s21_pow(0, 2), pow(0, 2));
   
-  ASSERT_POW(s21_pow(0, s21_N_INF), pow(0, s21_N_INF));
+  ck_assert_double_infinite(s21_pow(0, s21_N_INF)); // pow(0, s21_N_INF) = inf, по этому, проверяем так.
   ASSERT_POW(s21_pow(-1, s21_N_INF), pow(-1, s21_N_INF));
   ASSERT_POW(s21_pow(-1, s21_INF), pow(-1, s21_INF));
 
