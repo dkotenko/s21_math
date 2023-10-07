@@ -220,12 +220,12 @@ long double s21_pow(double base, double exp) {
   int neg = 0;
   if (base == 1 || exp == 0)
     y = 1;
-  else if (exp == s21_INF || exp == s21_N_INF) {
+  else if (__builtin_isinf(exp)) {
     if (base < 0)
       y = 1;
     else
       y = s21_INF;
-  } else if (exp == s21_NAN || exp == s21_N_NAN)
+  } else if (__builtin_isnan(exp))
     y = s21_N_NAN;
   else if (base == 0)
     y = 0;
