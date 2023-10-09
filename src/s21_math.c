@@ -17,8 +17,8 @@ long double s21_fabs(double x) {
 }
 
 static inline double s21_normalize_radian(double x) {
-  while (x > s21_PI || x < -s21_PI) {
-    x += x > s21_PI ? -2 * s21_PI : 2 * s21_PI;
+  while (x > S21_PI || x < -S21_PI) {
+    x += x > S21_PI ? -2 * S21_PI : 2 * S21_PI;
   }
   return x;
 }
@@ -27,7 +27,7 @@ long double s21_sin(double x) {
   x = s21_normalize_radian(x);
   long double temp = x, y = x;
   long double i = 1.;
-  while (s21_fabs(temp) > s21_EPS) {
+  while (s21_fabs(temp) > S21_EPS) {
     temp = -1 * temp * x * x / (2 * i * (2 * i + 1));
     i += 1.;
     y += temp;
@@ -37,7 +37,7 @@ long double s21_sin(double x) {
 
 long double s21_cos(double x) {
   x = s21_normalize_radian(x);
-  return s21_sin((s21_PI / 2.0) - x);
+  return s21_sin((S21_PI / 2.0) - x);
 }
 
 long double s21_tan(double x) {
@@ -48,13 +48,13 @@ long double s21_tan(double x) {
 long double s21_asin(double x) {
   long double temp = x, y = x;
   long double i = 1;
-  while (s21_fabs(temp) > s21_EPS) {
+  while (s21_fabs(temp) > S21_EPS) {
     if (x < -1 || x > 1) {
-      y = s21_NAN;
+      y = S21_NAN;
       break;
     }
     if (x == 1 || x == -1) {
-      y = s21_PI / 2 * x;
+      y = S21_PI / 2 * x;
       break;
     }
     temp *= x * x * (2 * i - 1) * (2 * i - 1) / ((2 * i + 1) * 2 * i);
@@ -66,9 +66,9 @@ long double s21_asin(double x) {
 
 long double s21_acos(double x) {
   if (x <= 1 && x >= -1) {
-    x = s21_PI / 2. - s21_asin(x);
+    x = S21_PI / 2. - s21_asin(x);
   } else {
-    x = s21_NAN;
+    x = S21_NAN;
   }
   return x;
 }
@@ -77,7 +77,7 @@ static inline long double s21_approximate(double x) {
   long double precision = x;
   long double y = x;
 
-  for (int i = 1; s21_fabs(precision) > s21_EPS; i++) {
+  for (int i = 1; s21_fabs(precision) > S21_EPS; i++) {
     precision = -1 * precision * x * x * (2 * i - 1) / (2 * i + 1);
     y += precision;
   }
@@ -88,13 +88,13 @@ long double s21_atan(double x) {
   long double y = 0;
 
   if (x > 1) {
-    y = s21_PI / 2 - s21_approximate(1 / x);
+    y = S21_PI / 2 - s21_approximate(1 / x);
   } else if (x < -1) {
-    y = s21_N_PI / 2 - s21_approximate(1 / x);
+    y = S21_N_PI / 2 - s21_approximate(1 / x);
   } else if (x == 1) {
-    y = s21_PI / 4;
+    y = S21_PI / 4;
   } else if (x == -1) {
-    y = s21_N_PI / 4;
+    y = S21_N_PI / 4;
   } else if (x == 0) {
     y = 0;
   } else if (x < 1 && x > -1) {
@@ -127,7 +127,7 @@ long double s21_floor(double num) {
     return d - 1;
 }
 
-long double s21_exp(double x) {
+long double S21_Exp(double x) {
   long double temp = 1, y = 1;
   long double i = 1;
   int flag = 0;
@@ -135,17 +135,17 @@ long double s21_exp(double x) {
     x *= -1;
     flag = 1;
   }
-  while (s21_fabs(temp) > s21_EPS) {
+  while (s21_fabs(temp) > S21_EPS) {
     temp *= x / i;
     i++;
     y += temp;
-    if (y > s21_MAX_double) {
-      y = s21_INF;
+    if (y > S21_MAX_double) {
+      y = S21_INF;
       break;
     }
   }
-  y = flag == 1 ? y > s21_MAX_double ? 0 : 1. / y : y;
-  return y = y > s21_MAX_double ? s21_INF : y;
+  y = flag == 1 ? y > S21_MAX_double ? 0 : 1. / y : y;
+  return y = y > S21_MAX_double ? S21_INF : y;
 }
 
 long double s21_fmod(double x, double divisor) {
@@ -163,13 +163,13 @@ long double s21_log(double n) {
   int a = 0, b;
   double c = 0, d, e, f = 0;
   if (n < 0)
-    c = s21_NAN;
+    c = S21_NAN;
   else if (n == 0) {
-    c = s21_N_INF;
+    c = S21_N_INF;
   } else {
-    for (; (d = n / s21_E) > 1; ++a, n = d)
+    for (; (d = n / S21_E) > 1; ++a, n = d)
       ;
-    for (; (d = n * s21_E) < 1; --a, n = d)
+    for (; (d = n * S21_E) < 1; --a, n = d)
       ;
 
     d = (double)1 / (n - 1);
@@ -177,7 +177,7 @@ long double s21_log(double n) {
     e = d * d;
     c = 0;
     b = 1, f = 1;
-    while (c + s21_EPS < c + (double)1 / (b * f)) {
+    while (c + S21_EPS < c + (double)1 / (b * f)) {
       c += (double)1 / (b * f);
       b += 2, f *= e;
     }
@@ -203,12 +203,12 @@ long double s21_pow_fraction(double base, double exp) {
   double y = 1;
   if (exp < 0) {
     exp = -exp;
-    y = s21_exp(exp * s21_log(exp));
+    y = S21_Exp(exp * s21_log(exp));
     if (s21_fmod(exp, 2) != 0) {
       y = -y;
     }
   } else {
-    y = s21_exp(exp * s21_log(base));
+    y = S21_Exp(exp * s21_log(base));
   }
 
   return y;
@@ -224,13 +224,13 @@ long double s21_pow(double base, double exp) {
     if (base < 0)
       y = 1;
     else
-      y = s21_INF;
+      y = S21_INF;
   } else if (__builtin_isnan(exp))
-    y = s21_N_NAN;
+    y = S21_N_NAN;
   else if (base == 0)
     y = 0;
   else if (base < 0 && s21_fabs(exp) - (long int)s21_fabs(exp) > EPSILON)
-    y = s21_N_NAN;
+    y = S21_N_NAN;
   else {
     if (base < 0.0) {
       neg = 1;
@@ -259,9 +259,9 @@ long double s21_pow(double base, double exp) {
 
 long double s21_sqrt(double x) {
   long double y = 4, temp = 0;
-  while (s21_fabs(y - temp) > s21_EPS) {
+  while (s21_fabs(y - temp) > S21_EPS) {
     if (x < 0) {
-      y = s21_N_NAN;
+      y = S21_N_NAN;
       break;
     }
     temp = y;

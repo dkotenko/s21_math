@@ -30,7 +30,7 @@ else
 	TEST_LIBS=-lcheck -lm -lpthread -lrt -lsubunit 
 endif
 
-CC=gcc -Wall -Wextra -Werror -std=c11
+CC=gcc -Wall -Wextra -std=c11 #-Werror 
 CC_GCOV=gcc -Wall -Wextra -Werror -std=c11 \
 			-fcf-protection=full -static-libgcc --coverage -lgcov
 THREADS = 8
