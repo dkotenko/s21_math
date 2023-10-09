@@ -104,15 +104,17 @@ long double s21_atan(double x) {
 }
 
 long double s21_ceil(double num) {
-  if (num >= LLONG_MAX || num <= LLONG_MIN || num != num) {
-    return num;
-  }
+  long double out = num;
   long long n = (long long)num;
-  double d = (double)n;
-  if (EQUAL(d, num) || num <= 0)
-    return d;
-  else
-    return d + 1;
+  double whole = (double)n;
+  if(num < LLONG_MAX && num > LLONG_MIN && num == num) {
+    if (num > 0 && !EQUAL(num, whole)) {
+      out = whole + (num > 0);
+    } else if (num < 0) {
+      out = whole;
+    }
+  }
+  return out;
 }
 
 long double s21_floor(double num) {

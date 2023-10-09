@@ -17,7 +17,8 @@ TEST_DIR=tests
 TEST_NAME=test.bin
 TEST_SRCS_FILES= \
 			test_main.c \
-			test_pow.c
+			test_pow.c \
+			test_ceil.c
 TEST_SRCS = $(addprefix $(TEST_DIR)/, $(TEST_SRCS_FILES))
 TEST_OBJS=$(TEST_SRCS:%.c=%.o)
 
@@ -41,11 +42,9 @@ all:
 
 gcov_report: CC=$(CC_GCOV)
 gcov_report: fclean test
-	./$(TEST_NAME)
 	gcovr -r . -f src --html -o $(REPORT_NAME)
 	chmod +x *
-	./gcov_test
-	lcov -t "gcov_test" -o gcov_test.info --no-external -c -d .
+	lcov -t $(TEST_NAME) -o gcov_test.info --no-external -c -d .
 	genhtml -o report/ gcov_test.info
 	open ./report/index.html
 

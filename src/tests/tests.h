@@ -34,3 +34,4 @@ static inline void ASSERT(long double (*f21)(double), double (*f)(double),
 
 Suite *main_suite(void);
 Suite *pow_suite(void);
+Suite *ceil_suite(void);
