@@ -51,6 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-src/test
+src/test.bin
 src/1
 src/s21_math.a
+**/*.gcda
+**/*.gcno
+src/report
