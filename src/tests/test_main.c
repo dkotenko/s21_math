@@ -1,6 +1,5 @@
 #include "tests.h"
 
-
 //#define ASSERT(f21, f, value) ck_assert_ldouble_eq_tol(f21(value), (long
 // double)(f(value)), EPSILON)
 

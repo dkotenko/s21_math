@@ -9,7 +9,6 @@
 
 #include "s21_math.h"
 
-
 #define LEN_ARR(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 
 #define ASSERT_MSG_FMT "%s %.7lf: s21: %.7Lf f: %.7Lf, equal = %d\n"
