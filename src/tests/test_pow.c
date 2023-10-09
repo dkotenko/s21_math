@@ -59,14 +59,34 @@ TEST_F(minus_one__inf, -1, S21_INF, isinf);
 TEST_F(minus_one__ninf, -1, S21_N_INF, isinf);
 TEST_F(minus_one__nan, -1, S21_NAN, isinf);
 TEST_F(minus_one__nnan, -1, S21_N_NAN, isinf);
-TEST_F(one__inf, 1, S21_INF, isinf)
+START_TEST(one__inf) {
+  long double base = 1;
+  long double exp = S21_INF;
+  ck_assert_double_eq(s21_pow(base, exp), pow(base, exp));
+}
 TEST_F(one__ninf, 1, S21_N_INF, isinf)
-TEST_F(one__nan, 1, S21_NAN, isnan)
-TEST_F(one__nnan, 1, S21_N_NAN, isnan)
+START_TEST(one__nan) {
+  long double base = 1;
+  long double exp = S21_N_NAN;
+  ck_assert_double_eq(s21_pow(base, exp), pow(base, exp));
+}
+START_TEST(one__nnan) {
+  long double base = 1;
+  long double exp = S21_N_NAN;
+  ck_assert_double_eq(s21_pow(base, exp), pow(base, exp));
+}
 TEST_F(nan__zero, S21_NAN, 0, isnan)
 TEST_F(nnan__zero, S21_N_NAN, 0, isnan)
-TEST_F(inf__zero, S21_INF, 0, isinf)
-TEST_F(ninf__zero, S21_N_INF, 0, isinf)
+START_TEST(inf__zero) {
+  long double base = S21_INF;
+  long double exp = 0;
+  ck_assert_double_eq(s21_pow(base, exp), pow(base, exp));
+}
+START_TEST(ninf__zero) {
+  long double base = S21_N_INF;
+  long double exp = 0;
+  ck_assert_double_eq(s21_pow(base, exp), pow(base, exp));
+}
 TEST_F(less_one__inf, 0.1, S21_INF, isnan)
 TEST_F(less_one__ninf, 0.1, S21_N_INF, isinf)
 

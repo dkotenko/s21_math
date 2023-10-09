@@ -219,7 +219,9 @@ long double s21_pow(double base, double exp) {
   int even = 0;
   int neg = 0;
 
-  if (__builtin_isinf(exp)) {
+  if (base == 1 || exp == 0)
+    y = 1;
+  else if (__builtin_isinf(exp)) {
     if (base < 0 && __builtin_isinf(base) == 0)
       y = 1;
     else if (exp < 0 && base != 0) {
@@ -232,6 +234,8 @@ long double s21_pow(double base, double exp) {
     } else if (exp > 0) {
       if (base > -1 && base < 1)
         y = 0;
+      else if (base == 1)
+        y = 1;
       else
         y = S21_INF;
     } else
@@ -249,8 +253,6 @@ long double s21_pow(double base, double exp) {
       y = S21_INF;
   } else if (__builtin_isnan(exp) || __builtin_isnan(base))
     y = S21_N_NAN;
-  else if (base == 1 || exp == 0)
-    y = 1;
   else if (base == 0)
     y = 0;
   else if (base < 0 && s21_fabs(exp) - (long int)s21_fabs(exp) > EPSILON)
