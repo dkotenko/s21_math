@@ -15,7 +15,8 @@
 #define EPSILON 1e-10
 #define S21_E 2.7182818284590452354
 
-#define EQUAL(out21, out) (s21_fabs((long double)out21 - (long double)out) < EPSILON)
+#define EQUAL(out21, out) \
+  (s21_fabs((long double)out21 - (long double)out) < EPSILON)
 
 int s21_abs(int x);
 long double s21_acos(double x);

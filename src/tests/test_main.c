@@ -208,7 +208,6 @@ int main(void) {
   srunner_add_suite(runner, pow_suite());
   srunner_add_suite(runner, ceil_suite());
   srunner_add_suite(runner, floor_suite());
-  
 
   srunner_run_all(runner, CK_NORMAL);
   no_failed = srunner_ntests_failed(runner);

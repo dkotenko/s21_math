@@ -30,7 +30,8 @@ START_TEST(s21_pow_f) {
   ASSERT_POW(s21_pow(-0, 1), pow(-0, 1));
   ASSERT_POW(s21_pow(-0, 2), pow(-0, 2));
 
-  ck_assert_int_eq(__builtin_isinf(s21_pow(0, S21_N_INF)), __builtin_isinf(pow(0, S21_N_INF)));
+  ck_assert_int_eq(__builtin_isinf(s21_pow(0, S21_N_INF)),
+                   __builtin_isinf(pow(0, S21_N_INF)));
   ASSERT_POW(s21_pow(-1, S21_N_INF), pow(-1, S21_N_INF));
   ASSERT_POW(s21_pow(-1, S21_INF), pow(-1, S21_INF));
 }
@@ -118,21 +119,24 @@ END_TEST
 START_TEST(base_less_one_plus_inf) {
   long double base = 0.5591951;
   long double exp = S21_INF;
-  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)), __builtin_isinf(pow(base, exp)));
+  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)),
+                   __builtin_isinf(pow(base, exp)));
 }
 END_TEST
 
 START_TEST(gt_one_plus_inf) {
   long double base = 1.5591951;
   long double exp = S21_INF;
-  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)), __builtin_isinf(pow(base, exp)));
+  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)),
+                   __builtin_isinf(pow(base, exp)));
 }
 END_TEST
 
 START_TEST(minus_inf_neg_odd) {
   long double base = -S21_INF;
   long double exp = -193491;
-  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)), __builtin_isinf(pow(base, exp)));
+  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)),
+                   __builtin_isinf(pow(base, exp)));
 }
 END_TEST
 
@@ -146,7 +150,8 @@ END_TEST
 START_TEST(m_inf_positive_odd) {
   long double base = -S21_INF;
   long double exp = S21_INF;
-  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)), __builtin_isinf(pow(base, exp)));
+  ck_assert_int_eq(__builtin_isinf(s21_pow(base, exp)),
+                   __builtin_isinf(pow(base, exp)));
 }
 END_TEST
 

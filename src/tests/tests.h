@@ -4,10 +4,9 @@
 
 #include "check.h"
 #include "math.h"
+#include "s21_math.h"
 #include "stdio.h"
 #include "stdlib.h"
-
-#include "s21_math.h"
 
 #define LEN_ARR(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 

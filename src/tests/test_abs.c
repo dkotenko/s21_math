@@ -1,8 +1,8 @@
 #include "tests.h"
 
 static inline void ASSERT_ABS(int value) {
-	ck_assert_int_eq(s21_abs(value), abs(value));
-} 
+  ck_assert_int_eq(s21_abs(value), abs(value));
+}
 
 START_TEST(test_s21_math_abs_usual) {
   ASSERT_ABS(INT_MAX);
