@@ -107,7 +107,7 @@ long double s21_ceil(double num) {
   long double out = num;
   long long n = (long long)num;
   double whole = (double)n;
-  if(num < LLONG_MAX && num > LLONG_MIN && num == num) {
+  if (num < LLONG_MAX && num > LLONG_MIN && num == num) {
     if (num > 0 && !EQUAL(num, whole)) {
       out = whole + (num > 0);
     } else if (num < 0) {
@@ -118,17 +118,15 @@ long double s21_ceil(double num) {
 }
 
 long double s21_floor(double num) {
-  long double out = num;
-
-  if(num < (LLONG_MAX/2 + 1)*2.0 && num > (LLONG_MIN/2 + 1)*2.0 && num == num) {
-    long long n = (long long)num;
-    double whole = (double)n;
-    printf("out:%Lf, num:%lf, whole: %lf, equals: %d\n", out, num, whole, EQUAL(num, whole));
-    if (!EQUAL(num, whole)) {
-      out = whole - (num < 0);
-    }
+  if (num >= LLONG_MAX || num <= LLONG_MIN || num != num) {
+    return num;
   }
-  return out;
+  long long n = (long long)num;
+  double d = (double)n;
+  if (EQUAL(d, num) || num >= 0)
+    return d;
+  else
+    return d - 1;
 }
 
 long double S21_Exp(double x) {
@@ -258,7 +256,10 @@ long double s21_pow(double base, double exp) {
   } else if (__builtin_isnan(exp) || __builtin_isnan(base))
     y = S21_N_NAN;
   else if (base == 0)
-    y = 0;
+    if (exp > 0 && EQUAL((int)exp, exp))
+      y = 0;
+    else
+      y = S21_INF;
   else if (base < 0 && s21_fabs(exp) - (long int)s21_fabs(exp) > EPSILON)
     y = S21_N_NAN;
   else {
