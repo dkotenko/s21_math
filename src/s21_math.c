@@ -118,15 +118,17 @@ long double s21_ceil(double num) {
 }
 
 long double s21_floor(double num) {
-  if (num >= LLONG_MAX || num <= LLONG_MIN || num != num) {
-    return num;
+  long double out = num;
+
+  if(num < (LLONG_MAX/2 + 1)*2.0 && num > (LLONG_MIN/2 + 1)*2.0 && num == num) {
+    long long n = (long long)num;
+    double whole = (double)n;
+    printf("out:%Lf, num:%lf, whole: %lf, equals: %d\n", out, num, whole, EQUAL(num, whole));
+    if (!EQUAL(num, whole)) {
+      out = whole - (num < 0);
+    }
   }
-  long long n = (long long)num;
-  double d = (double)n;
-  if (EQUAL(d, num) || num >= 0)
-    return d;
-  else
-    return d - 1;
+  return out;
 }
 
 long double S21_Exp(double x) {
@@ -244,9 +246,9 @@ long double s21_pow(double base, double exp) {
       y = S21_INF;
   } else if (__builtin_isinf(base)) {
     if (base < 0) {
-      if (exp > 0 && s21_fmod(exp, 2) == 0.0)
+      if (exp > 0 && EQUAL(s21_fmod(exp, 2), 0.0))
         y = S21_INF;
-      else if (exp > 0 && s21_fmod(exp, 2) == 1.0)
+      else if (exp > 0 && EQUAL(s21_fmod(exp, 2), 1.0))
         y = S21_N_INF;
     }
     if (exp < 0)

@@ -72,8 +72,6 @@ START_TEST(S21_Exp_f) {
   ASSERT(S21_Exp, exp, 5.);
   ASSERT(S21_Exp, exp, -2.);
   ASSERT(S21_Exp, exp, -1234567.);
-  // ck_assert_ldouble_eq_tol(S21_Exp(1234567.), exp(1234567.), EPSILON);
-  // ASSERT(S21_Exp, exp, 1234567.);
   for (double i = -10; i < 10; i++) {
     ASSERT(S21_Exp, exp, i);
   }
@@ -94,7 +92,6 @@ END_TEST
 
 START_TEST(s21_sqrt_f) {
   double args[] = {16.0, 45.43, 5., 0};
-  // assert_args(args, LEN_ARR(args), s21_ceil, ceil);
   ASSERT_ARGS(s21_sqrt, sqrt);
 
   for (double i = 0; i < 100000; i += 10) {
@@ -210,6 +207,7 @@ int main(void) {
   runner = srunner_create(main_suite());
   srunner_add_suite(runner, pow_suite());
   srunner_add_suite(runner, ceil_suite());
+  srunner_add_suite(runner, floor_suite());
   
 
   srunner_run_all(runner, CK_NORMAL);

@@ -207,7 +207,7 @@ START_TEST(TEST_CEIL_21) {
 END_TEST
 
 Suite *ceil_suite(void) {
-  Suite *s = suite_create("s21_ceil_fmod_log");
+  Suite *s = suite_create("s21_ceil");
   TCase *tc_ceil;
 
   tc_ceil = tcase_create("TEST_CEIL\n");

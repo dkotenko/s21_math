@@ -18,7 +18,8 @@ TEST_NAME=test.bin
 TEST_SRCS_FILES= \
 			test_main.c \
 			test_pow.c \
-			test_ceil.c
+			test_ceil.c \
+			test_floor.c
 TEST_SRCS = $(addprefix $(TEST_DIR)/, $(TEST_SRCS_FILES))
 TEST_OBJS=$(TEST_SRCS:%.c=%.o)
 
@@ -81,7 +82,7 @@ check: test
 	make test
 		
 clean:
-	@rm -rf **/*.o ./a.out gcov_test *.html *.css ./GcovReport ./*.gcno ./*.gcda ./report ./*.info ./math_o ./*.dSYM ./CPPLINT*
+	@rm -rf **/*.o *.o gcov_test *.html *.css ./GcovReport **/*.gcno **/*.gcda ./report ./*.info ./math_o ./*.dSYM ./CPPLINT* 
 
 fclean:
 	@make -s clean
