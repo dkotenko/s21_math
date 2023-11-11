@@ -68,12 +68,12 @@ START_TEST(s21_fmod_f) {
 }
 END_TEST
 
-START_TEST(S21_Exp_f) {
-  ASSERT(S21_Exp, exp, 5.);
-  ASSERT(S21_Exp, exp, -2.);
-  ASSERT(S21_Exp, exp, -1234567.);
+START_TEST(s21_exp_f) {
+  ASSERT(s21_exp, exp, 5.);
+  ASSERT(s21_exp, exp, -2.);
+  ASSERT(s21_exp, exp, -1234567.);
   for (double i = -10; i < 10; i++) {
-    ASSERT(S21_Exp, exp, i);
+    ASSERT(s21_exp, exp, i);
   }
 }
 END_TEST
@@ -155,7 +155,7 @@ Suite *main_suite(void) {
 
   tc_exp = tcase_create("Exp");
   suite_add_tcase(s, tc_exp);
-  tcase_add_test(tc_exp, S21_Exp_f);
+  tcase_add_test(tc_exp, s21_exp_f);
 
   tc_fmod = tcase_create("Fmod");
   suite_add_tcase(s, tc_fmod);

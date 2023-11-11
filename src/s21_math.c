@@ -129,7 +129,7 @@ long double s21_floor(double num) {
     return d - 1;
 }
 
-long double S21_Exp(double x) {
+long double s21_exp(double x) {
   long double temp = 1, y = 1;
   long double i = 1;
   int flag = 0;
@@ -205,12 +205,12 @@ long double s21_pow_fraction(double base, double exp) {
   double y = 1;
   if (exp < 0) {
     exp = -exp;
-    y = S21_Exp(exp * s21_log(exp));
+    y = s21_exp(exp * s21_log(exp));
     if (s21_fmod(exp, 2) != 0) {
       y = -y;
     }
   } else {
-    y = S21_Exp(exp * s21_log(base));
+    y = s21_exp(exp * s21_log(base));
   }
 
   return y;
