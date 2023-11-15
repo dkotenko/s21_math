@@ -82,7 +82,7 @@ check: test
 	make test
 		
 clean:
-	@rm -rf **/*.o *.o gcov_test *.html *.css ./GcovReport **/*.gcno **/*.gcda ./report ./*.info ./math_o ./*.dSYM ./CPPLINT* 
+	@rm -rf **/*.o *.o gcov_test *.html *.css ./GcovReport **/*.gcno **/*.gcda *.gcno *.gcda ./report ./*.info ./math_o ./*.dSYM ./CPPLINT* 
 
 fclean:
 	@make -s clean
