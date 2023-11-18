@@ -1,5 +1,5 @@
 LIB=s21_math
-NAME=lib$(LIB).a
+NAME=$(LIB).a
 HEADERS_DIR = .
 HEADERS_FILES=$(LIB).h
 
